@@ -1,0 +1,6 @@
+services:
+  web:
+    container_name: quitandinha.cachoeiro.es
+    build: .
+    ports:
+      - "8099:8000"
