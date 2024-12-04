@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% set index_active = "active" %}
+{% block titulo %}Página Principal{% endblock %}
+{% block conteudo %}
+<h1 class="text-center">Produtos em Destaque</h1>
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-6 g-3 mt-2">
+    {% for p in produtos %}
+    <div class="col">
+        <div class="card text-center bg-light">
+            <a href="#" class="position-absolute end-0 p-2 text-danger">
+                <i class="bi-suit-heart" style="font-size: 24px; line-height: 24px;"></i>
+            </a>
+            <a href="/produto/{{p.id}}">
+                <img src="/static/img/produtos/{{'{:06d}'.format(p.id)}}.jpg" class="card-img-top">
+            </a>
+            <div class="card-header">
+                R$ {{p.preco}}
+            </div>
+            <div class="card-body">
+                <h5 class="card-title t1l">{{p.nome}}</h5>
+                <p class="card-text t3l">
+                    {{p.descricao}}
+                </p>
+            </div>
+            <div class="card-footer">
+                <a href="carrinho.html" class="btn btn-danger mt-2 d-block">
+                    Adicionar ao Carrinho
+                </a>
+                <small class="text-success">{{p.estoque}} em estoque</small>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

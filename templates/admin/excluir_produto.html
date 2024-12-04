@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block titulo %}Exclusão de Produto{% endblock %}
+{% block conteudo %}
+<h1>Exclusão de Produto</h1>
+<hr>
+<form method="post" class="row" action="/admin/excluir_produto">
+    <input type="hidden" name="id" value="{{produto.id}}">
+    <p class="lead">Deseja realmente excluir o produto <b>{{produto.nome}}</b>?</p>
+    <div class="col-6">
+        <a href="/admin" class="btn btn-secondary">Não</a>
+        <button type="submit" class="btn btn-danger">
+            Sim
+        </button>
+    </div>
+</form>
+{% endblock %}

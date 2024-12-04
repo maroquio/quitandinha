@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block titulo %}Detalhes do Produto "{{produto.nome}}"{% endblock %}
+{% block conteudo %}
+<div class="container">
+    <div class="row g-3">
+        <div class="col-12 col-sm-6">
+            <img src="/static/img/produtos/{{'{:06d}'.format(produto.id)}}.jpg" class="img-thumbnail" id="imgProduto">            
+        </div>
+        <div class="col-12 col-sm-6">
+            <h1>{{produto.nome}}</h1>
+            <p>
+                {{produto.descricao}}
+            </p>
+            <p class="text-danger fs-3 fw-bold">R$ {{produto.preco}}</p>
+            <p>Quantidade em estoque: {{produto.estoque}}</p>
+            <p>
+                <button class="btn btn-lg btn-danger mb-3 mb-xl-0 me-2">
+                    <i class="bi-cart"></i> Adicionar ao Carrinho
+                </button>
+                <button class="btn btn-lg btn-outline-danger">
+                    <i class="bi-heart"></i> Adicionar aos Favoritos
+                </button>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

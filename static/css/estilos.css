@@ -1,0 +1,34 @@
+.t1l {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.t3l {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.table-produtos th,
+.table-produtos td {
+    vertical-align: middle;
+    width: 1%;
+    white-space: nowrap;
+    text-align: center;
+    padding: 5px 10px;
+}
+
+.table-produtos th:nth-of-type(2),
+.table-produtos td:nth-of-type(2) {
+    text-align: left;
+    width: auto;
+}
+
+.h-120 {
+    height: 120px !important;
+}
