@@ -1,12 +1,15 @@
 from datetime import date
+from io import BytesIO
 import bcrypt
-from fastapi import APIRouter, Form, Request
+from fastapi import APIRouter, File, Form, Request, UploadFile
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
+from PIL import Image
 
 from models.usuario_model import Usuario
 from repos.produto_repo import ProdutoRepo
 from repos.usuario_repo import UsuarioRepo
+from util.imagem import transformar_em_quadrada
 from util.mensagens import *
 
 
@@ -55,6 +58,7 @@ def post_entrar(
     # cria a sessão e manda o usuário para a página principal
     usuario = UsuarioRepo.obter_dados_por_email(email)
     request.session["usuario"] = {
+        "id": usuario.id,
         "nome": usuario.nome,
         "email": usuario.email, 
         "perfil": usuario.perfil
@@ -77,14 +81,15 @@ def get_cadastrar(request: Request):
     return response
 
 @router.post("/cadastrar")
-def post_cadastrar(
+async def post_cadastrar(
     request: Request, 
     nome: str = Form(),
     data_nascimento: date = Form(),
     email: str = Form(),
     telefone: str = Form(),
     senha: str = Form(),
-    confirmacao_senha: str = Form()):
+    confirmacao_senha: str = Form(),
+    foto: UploadFile = File()):
     if senha != confirmacao_senha:
         response = RedirectResponse("/cadastrar", 303)
         adicionar_mensagem_erro(response, "Senha e confirmação de senha não conferem.")
@@ -94,6 +99,13 @@ def post_cadastrar(
     novo_usuario = UsuarioRepo.inserir(novo_usuario)
     if novo_usuario:
         response = RedirectResponse("/entrar", 303)
+        conteudo_arquivo = await foto.read()
+        dados_imagem = Image.open(BytesIO(conteudo_arquivo))
+        if not dados_imagem:
+            adicionar_mensagem_erro(response, "Selecione uma foto de perfil válida.")
+            return response
+        imagem_quadrada = transformar_em_quadrada(dados_imagem)
+        imagem_quadrada.save(f"static/img/usuarios/{novo_usuario.id:06d}.jpg", "JPEG")
         adicionar_mensagem_sucesso(response, "Cadastro realizado com sucesso! Use suas credenciais para entrar.")
         return response
     else:

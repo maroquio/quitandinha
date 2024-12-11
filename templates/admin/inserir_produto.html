@@ -3,7 +3,7 @@
 {% block conteudo %}
 <h1>Inserção de Produto</h1>
 <hr>
-<form method="post" class="row">
+<form method="post" class="row" enctype="multipart/form-data">
     <div class="col-12">
         <div class="form-floating mb-3">
             <input type="text" class="form-control" name="nome" id="nome" placeholder=" " value="{{produto.nome or ''}}"/>
@@ -26,6 +26,12 @@
         <div class="form-floating mb-3">
             <input type="text" class="form-control" name="preco" id="preco" placeholder=" " value="{{produto.preco or ''}}" />
             <label for="preco">Preço</label>
+        </div>
+    </div>
+    <div class="col-12 mb-3">
+        <div class="border border-solid border-1 border-secondary-subtle rounded-3 p-3">
+            <label for="imagem" class="form-label">Imagem</label>
+            <input type="file" name="imagem" id="imagem" class="form-control" accept="image/jpeg">
         </div>
     </div>
     <div class="col-6">

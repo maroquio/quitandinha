@@ -24,8 +24,12 @@
                 <div class="d-flex justify-content-end align-items-center">
                     <a class="nav-item nav-link {{index_active}}" href="/">Principal</a>
                     {% if autenticado: %}
+                    {% set usuario = request.session["usuario"] %}
                     <a class="nav-item nav-link {{admin_active}}" href="/admin">Administrar</a>
                     <a class="nav-item nav-link" href="/sair">Sair</a>
+                    <span class="nav-item">
+                        <img src="/static/img/usuarios/{{'{:06d}'.format(usuario.id)}}.jpg" alt="Usuário" class="img-thumbnail rounded-circle ms-2" style="height:48px">
+                    </span>
                     {% else: %}
                     <a class="nav-item nav-link {{entrar_active}}" href="/entrar">Entrar</a>
                     {% endif %}

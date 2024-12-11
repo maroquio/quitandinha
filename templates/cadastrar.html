@@ -2,7 +2,7 @@
 {% block titulo %}Cadastrar{% endblock %}
 {% block conteudo %}
 <div class="w-100 d-flex justify-content-center">
-    <form action="/cadastrar" method="post" class="col-12 col-lg-6">
+    <form action="/cadastrar" method="post" class="col-12 col-lg-6" enctype="multipart/form-data">
         <div class="card">
             <div class="card-header">
                 <h3>Cadastrar</h3>
@@ -45,6 +45,16 @@
                             <label>Confirmação de Senha</label>
                         </div>
                     </div>
+                    <div class="col-9">
+                        <div class="border border-solid border-1 border-secondary-subtle rounded-3 p-3">
+                            <label for="foto" class="form-label">Foto de Perfil</label>
+                            <input type="file" name="foto" id="foto" class="form-control" accept="image/jpeg" onchange="verImagem(event)">
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <img id="preview" class="border border-2 rounded rounded-3 p-2 w-100 d-none" />
+                        <script src="/static/js/verImagem.js"></script>
+                    </div>
                 </div>
             </div>
             <div class="card-footer p-3 mt-3">
@@ -56,5 +66,5 @@
         </div>
     </form>
 </div>
-<script src="/static/js/mascararCampos.js"></script>
+<!-- <script src="/static/js/mascararCampos.js"></script> -->
 {% endblock %}

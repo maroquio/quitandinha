@@ -1,9 +1,12 @@
-from fastapi import APIRouter, Form, Path, Query, Request
+from io import BytesIO
+from fastapi import APIRouter, File, Form, Path, Query, Request, UploadFile
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
+from PIL import Image
 
 from models.produto_model import ProdutoModel
 from repos.produto_repo import ProdutoRepo
+from util.imagem import transformar_em_quadrada
 from util.mensagens import *
 
 
@@ -52,15 +55,23 @@ def get_inserir_produto(request: Request):
     return response
 
 @router.post("/inserir_produto")
-def post_inserir_produto(
+async def post_inserir_produto(
     request: Request,
     nome: str = Form(...),
     descricao: str = Form(...),
     estoque: int = Form(...),
-    preco: float = Form(...)):
+    preco: float = Form(...),
+    imagem: UploadFile = File()):
     produto = ProdutoModel(None, nome, descricao, preco, estoque)
     if ProdutoRepo.inserir(produto):
         response = RedirectResponse("/admin", 303)
+        conteudo_arquivo = await imagem.read()
+        dados_imagem = Image.open(BytesIO(conteudo_arquivo))
+        if not dados_imagem:
+            adicionar_mensagem_erro(response, "Selecione uma imagem válida.")
+            return response
+        imagem_quadrada = transformar_em_quadrada(dados_imagem)
+        imagem_quadrada.save(f"static/img/produtos/{produto.id:06d}.jpg", "JPEG")
         adicionar_mensagem_sucesso(response, "Produto inserido com sucesso!")
         return response
     else:
